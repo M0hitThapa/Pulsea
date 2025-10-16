@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Armata&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -113,8 +115,13 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    font-family: "Rubik", sans-serif;
   }
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.font-title {
+  font-family: "Armata", sans-serif;
 }
