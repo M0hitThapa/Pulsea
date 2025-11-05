@@ -5,10 +5,11 @@ import { Projects } from "@/db/schema";
 
 import { SignOutButton } from "@clerk/nextjs";
 import Link from "next/link";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 const Page = async () => {
-  const allProjects = await db.select().from(Projects);
-  console.log(allProjects);
+  const { userId } = await auth();
+  const user = await currentUser();
   return (
     <Container>
       <header className="my-2 flex items-center justify-between">

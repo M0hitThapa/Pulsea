@@ -11,6 +11,8 @@ import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+import { createProject } from "@/app/actions/createProject";
+import { SubmitButton } from "./submit-button";
 const NewProjectButton = () => {
   return (
     <Dialog>
@@ -24,17 +26,19 @@ const NewProjectButton = () => {
             Create a new project to get started
           </DialogDescription>
         </DialogHeader>
-        <form className="flex flex-col gap-2 ">
+        <form action={createProject} className="flex flex-col gap-2 ">
           <Label htmlFor="name">Name</Label>
-          <Input id="name" placeholder="Project Name" />
+          <Input id="name" name="name" placeholder="Project Name" />
           <Label htmlFor="url">URL</Label>
-          <Input id="url" placeholder="https://example.com" />
+          <Input id="url" name="url" placeholder="https://example.com" />
           <Label htmlFor="description">Description</Label>
-          <Textarea id="description" placeholder="Description(Optional)" />
+          <Textarea
+            id="description"
+            name="description"
+            placeholder="Description(Optional)"
+          />
         </form>
-        <DialogFooter>
-          <Button>Create Project</Button>
-        </DialogFooter>
+        <SubmitButton />
       </DialogContent>
     </Dialog>
   );
