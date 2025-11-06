@@ -7,12 +7,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
 import { createProject } from "@/app/actions/createProject";
-import { SubmitButton } from "./submit-button";
+import SubmitButton from "./submit-button";
+
 const NewProjectButton = () => {
   return (
     <Dialog>
@@ -23,22 +24,23 @@ const NewProjectButton = () => {
         <DialogHeader>
           <DialogTitle>New Project</DialogTitle>
           <DialogDescription>
-            Create a new project to get started
+            Create a new Project to get started.
           </DialogDescription>
         </DialogHeader>
-        <form action={createProject} className="flex flex-col gap-2 ">
+
+        <form action={createProject} className="flex flex-col gap-2">
           <Label htmlFor="name">Name</Label>
           <Input id="name" name="name" placeholder="Project Name" />
           <Label htmlFor="url">URL</Label>
-          <Input id="url" name="url" placeholder="https://example.com" />
+          <Input id="url" name="url" placeholder="https://example.dom" />
           <Label htmlFor="description">Description</Label>
           <Textarea
             id="description"
             name="description"
             placeholder="Description(Optional)"
           />
+          <SubmitButton />
         </form>
-        <SubmitButton />
       </DialogContent>
     </Dialog>
   );
