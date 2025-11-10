@@ -6,10 +6,19 @@ import { Projects } from "@/db/schema";
 import { SignOutButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { auth, currentUser } from "@clerk/nextjs/server";
+import { eq } from "drizzle-orm";
+import ProjectList from "./project-list";
 
 const Page = async () => {
   const { userId } = await auth();
-  const user = await currentUser();
+  if (!userId) {
+    return null;
+  }
+
+  const userProjects = await db
+    .select()
+    .from(Projects)
+    .where(eq(Projects.userId, userId));
   return (
     <Container>
       <header className="my-2 flex items-center justify-between">
@@ -19,6 +28,7 @@ const Page = async () => {
         </div>
       </header>
       <NewProjectButton />
+      <ProjectList projects={userProjects} />
     </Container>
   );
 };
