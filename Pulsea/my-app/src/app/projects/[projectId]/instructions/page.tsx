@@ -1,3 +1,5 @@
+import { CopyButton } from "@/components/copy-button";
+
 const Page = async ({
   params,
 }: {
@@ -14,6 +16,12 @@ const Page = async ({
         {`<my-widget project=${projectId}></my-widget>`}
         {`<script src=${process.env.WIDGET_URL}/widget.umd.js></script>`}
       </code>
+      <CopyButton
+        text={`
+        <my-widget project=${projectId}></my-widget>/n
+        <script src=${process.env.WIDGET_URL}/widget.umd.js></script>
+        `}
+      />
     </div>
   );
 };
