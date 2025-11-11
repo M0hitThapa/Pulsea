@@ -2,7 +2,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -11,7 +10,7 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
-import { createProject } from "@/app/actions/createProject";
+import { createProject } from "@/actions/createProject";
 import SubmitButton from "./submit-button";
 
 const NewProjectButton = () => {
