@@ -1,4 +1,4 @@
-import { Projects } from "@/db/schema";
+import { projects } from "@/db/schema";
 import { InferSelectModel } from "drizzle-orm";
 import {
   Card,
@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-type Project = InferSelectModel<typeof Projects>;
+type Project = InferSelectModel<typeof projects>;
 
 type Props = {
   projects: Project[];

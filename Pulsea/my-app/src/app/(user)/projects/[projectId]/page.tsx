@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { Projects } from "@/db/schema";
+import { projects as dbProjects } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 const Page = async ({
@@ -15,12 +15,21 @@ const Page = async ({
     return <div>Invalid ProjectId</div>;
   }
 
-  const project = await db.query.Projects.findMany({
-    where: eq(Projects.id, parseInt(projectId)),
+  const projects = await db.query.projects.findMany({
+    where: eq(dbProjects.id, parseInt(projectId)),
+    with: {
+      feedbacks: true,
+    },
   });
 
+  const project = projects[0];
+
+  if (!project) {
+    return <div>Project not found</div>;
+  }
+
   console.log(project);
-  return <div>Project Page{projectId}</div>;
+  return <div>{project.name}</div>;
 };
 
 export default Page;

@@ -1,7 +1,7 @@
 import { Container } from "@/components/container";
 import NewProjectButton from "@/components/newproject-btn";
 import { db } from "@/db";
-import { Projects } from "@/db/schema";
+import { projects } from "@/db/schema";
 
 import { SignOutButton } from "@clerk/nextjs";
 import Link from "next/link";
@@ -17,8 +17,8 @@ const Page = async () => {
 
   const userProjects = await db
     .select()
-    .from(Projects)
-    .where(eq(Projects.userId, userId));
+    .from(projects)
+    .where(eq(projects.userId, userId));
   return (
     <Container>
       <header className="my-2 flex items-center justify-between">
