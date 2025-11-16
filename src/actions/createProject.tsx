@@ -20,5 +20,5 @@ export async function createProject(formData: FormData) {
     .values(project)
     .returning({ insertedId: projects.id });
 
-  redirect(`/projects/${newProject.insertedId}/insructions`);
+  redirect(`/projects/${newProject.insertedId}/instructions`);
 }
