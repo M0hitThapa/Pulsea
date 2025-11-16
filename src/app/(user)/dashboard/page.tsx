@@ -1,13 +1,12 @@
 import { Container } from "@/components/container";
-import NewProjectButton from "@/components/newproject-btn";
+
 import { db } from "@/db";
 import { projects } from "@/db/schema";
 
-import { SignOutButton } from "@clerk/nextjs";
-import Link from "next/link";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import ProjectList from "./project-list";
+import DashNav from "./dash-nav";
 
 const Page = async () => {
   const { userId } = await auth();
@@ -21,14 +20,10 @@ const Page = async () => {
     .where(eq(projects.userId, userId));
   return (
     <Container>
-      <header className="my-2 flex items-center justify-between">
-        <Link href="/">Pulsea</Link>
-        <div className="bg-neutral-900 text-white px-4 py-2 rounded-md">
-          <SignOutButton />
-        </div>
-      </header>
-      <NewProjectButton />
-      <ProjectList projects={userProjects} />
+      <DashNav />
+      <div className="flex items-start justify-between mt-20">
+        <ProjectList projects={userProjects} />
+      </div>
     </Container>
   );
 };

@@ -1,5 +1,12 @@
 import { relations } from "drizzle-orm";
-import { integer, pgTable, serial, text, varchar } from "drizzle-orm/pg-core";
+import {
+  integer,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+  varchar,
+} from "drizzle-orm/pg-core";
 
 export const projects = pgTable("projects", {
   id: serial("id").primaryKey(),
@@ -15,6 +22,8 @@ export const feedbacks = pgTable("feedback", {
   userName: text("user_name"),
   userEmail: text("user_email"),
   message: text("message"),
+  rating: integer("rating"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
 export const ProjectRelation = relations(projects, ({ many }) => ({

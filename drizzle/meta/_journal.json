@@ -8,6 +8,20 @@
       "when": 1762015936144,
       "tag": "20251101165216_tired_frank_castle",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1763136259270,
+      "tag": "20251114160419_complex_pretty_boy",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1763202313534,
+      "tag": "20251115102513_fancy_proteus",
+      "breakpoints": true
     }
   ]
 }
