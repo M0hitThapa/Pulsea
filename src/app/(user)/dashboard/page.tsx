@@ -5,7 +5,7 @@ import { projects } from "@/db/schema";
 
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
-import ProjectList from "./project-list";
+import { ProjectListClient } from "./project-list";
 import DashNav from "./dash-nav";
 
 const Page = async () => {
@@ -22,7 +22,7 @@ const Page = async () => {
     <Container>
       <DashNav />
       <div className="flex items-start justify-between mt-20">
-        <ProjectList projects={userProjects} />
+        <ProjectListClient initialProjects={userProjects} />
       </div>
     </Container>
   );
