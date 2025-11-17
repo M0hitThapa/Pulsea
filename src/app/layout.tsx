@@ -24,7 +24,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${interSans.variable} antialiased bg-neutral-50 dark:bg-neutral-950`}
+          className={`${interSans.variable} antialiased bg-white dark:bg-neutral-950`}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}

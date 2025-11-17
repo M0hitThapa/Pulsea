@@ -31,7 +31,7 @@ const ProjectList = async (props: Props) => {
             key={project.id}
             className="shadow-inner shadow-neutral-950 dark:shadow-neutral-100"
           >
-            <Card className="h-88 w-80 shadow-md/20  z-10 inset-0 flex flex-col justify-between ">
+            <Card className="h-88 w-80   z-10 inset-0 flex flex-col justify-between bg-linear-to-b from-neutral-100  to-white dark:from-neutral-900 dark:to-neutral-800">
               <CardHeader className="flex items-start justify-between">
                 <div className="flex flex-col gap-5">
                   <CardTitle className="text-2xl font-semibold text-shadow-2xs">
@@ -75,8 +75,39 @@ const ProjectList = async (props: Props) => {
               </CardHeader>
 
               <CardFooter className="flex justify-between items-center">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link href={`/projects/${project.id}/instructions`}>
+                      <Button
+                        variant="outline"
+                        className="cursor-pointer  border-e-2 bg-white dark:bg-neutral-900 dark:text-neutral-100  rounded-md shadow-md/20 p-1 text-neutral-900 font-semibold text-shadow-2xs"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          className="icon icon-tabler icons-tabler-outline icon-tabler-code"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M7 8l-4 4l4 4" />
+                          <path d="M17 8l4 4l-4 4" />
+                          <path d="M14 4l-4 16" />
+                        </svg>
+                      </Button>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Embed Code</p>
+                  </TooltipContent>
+                </Tooltip>
                 <Link href={`/projects/${project.id}`}>
-                  <Button>
+                  <button className="cursor-pointer text-xs px-3 py-1.5 border border-neutral-300 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-950 rounded-md flex  gap-0.5 items-center justify-center   ">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -105,32 +136,10 @@ const ProjectList = async (props: Props) => {
                       <path d="M19 9h.01" />
                     </svg>
                     View Project
-                  </Button>
+                  </button>
                 </Link>
 
                 {/* Embed Code Button */}
-                <Link href={`/projects/${project.id}/instructions`}>
-                  <Button variant="secondary">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      className="icon icon-tabler icons-tabler-outline icon-tabler-code"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M7 8l-4 4l4 4" />
-                      <path d="M17 8l4 4l-4 4" />
-                      <path d="M14 4l-4 16" />
-                    </svg>
-                    Embed Code
-                  </Button>
-                </Link>
               </CardFooter>
             </Card>
           </li>
