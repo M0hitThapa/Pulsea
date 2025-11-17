@@ -31,7 +31,7 @@ export default function Home() {
             alt="hero-section"
             height={1000}
             width={1000}
-            className="rounded-md shadow shadow-neutral-900 dark:shadow-neutral-500"
+            className="rounded-md "
           />
         </div>
       </div>

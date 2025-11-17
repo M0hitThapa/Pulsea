@@ -536,7 +536,7 @@ export function FeedbackSidebar({
   const filteredFeedbacks = React.useMemo(() => {
     let filtered = [...feedbackData];
 
-    // Apply category filter - FIXED: changed "starred" to "favourites"
+    // Apply category filter
     if (activeFilter === "favourites") {
       filtered = filtered.filter((f) => starredIds.has(f.id));
     } else if (activeFilter === 5 || activeFilter === 4) {
@@ -561,7 +561,7 @@ export function FeedbackSidebar({
     return filtered;
   }, [feedbackData, activeFilter, searchQuery, starredIds]);
 
-  // Calculate counts - FIXED: changed "starred" key to "favourites"
+  // Calculate counts
   const counts = React.useMemo(() => {
     const result: Record<string, number> = {
       all: feedbackData.length,
@@ -605,15 +605,13 @@ export function FeedbackSidebar({
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-
         {/* Content Area */}
         <div className="flex-1 flex overflow-hidden">
           {/* Feedback List */}
           <div
             className={`${
-              showDetail ? "hidden lg:block" : "block"
-            } w-full lg:w-96 xl:w-md bg-white dark:bg-neutral-900 border-r border-gray-200 dark:border-neutral-800 flex flex-col overflow-hidden`}
+              showDetail ? "hidden" : "flex"
+            } lg:flex w-full lg:w-96 xl:w-md bg-white dark:bg-neutral-900 border-r border-gray-200 dark:border-neutral-800 flex-col overflow-hidden`}
           >
             {/* List Header */}
             <header className="bg-white dark:bg-neutral-900 border-b border-gray-200 dark:border-neutral-800 px-4 py-3">
