@@ -32,7 +32,7 @@ export const Widget = ({}) => {
 
   return (
     <>
-      <div className="widget fixed right-8 bottom-4 z-50">
+      <div className="widget fixed right-4 md:right-8 bottom-4 z-50">
         <Popover>
           <PopoverTrigger asChild>
             <div className="relative group">

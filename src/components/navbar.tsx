@@ -48,7 +48,7 @@ export const Navbar = () => {
       >
         <Link
           href="/"
-          className="text-2xl font-semibold text-shadow-2xl flex gap-1 items-center justify-center "
+          className="text-lg md:text-2xl font-semibold text-shadow-2xl flex gap-1 items-center justify-center "
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

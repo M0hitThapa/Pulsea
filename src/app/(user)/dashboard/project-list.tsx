@@ -31,6 +31,19 @@ export function ProjectListClient({
   const handleDelete = (projectId: number) => {
     setProjects((prev) => prev.filter((project) => project.id !== projectId));
   };
+  if (projects.length === 0) {
+    return (
+      <div className="w-full flex flex-col items-center justify-center py-20 text-center">
+        <div className="text-4xl mb-4">🗂️</div>
+
+        <h2 className="text-xl font-semibold mb-2">No projects created yet</h2>
+
+        <p className="text-neutral-600 dark:text-neutral-300 max-w-sm mb-6">
+          Start by creating your first project — it only takes a few seconds.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mx-auto">
