@@ -1,28 +1,39 @@
 const Loading = () => {
   return (
-    <div className="flex items-center justify-center h-screen">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        className="icon icon-tabler icons-tabler-outline icon-tabler-loader animate-spin size-20"
-      >
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M12 6l0 -3" />
-        <path d="M16.25 7.75l2.15 -2.15" />
-        <path d="M18 12l3 0" />
-        <path d="M16.25 16.25l2.15 2.15" />
-        <path d="M12 18l0 3" />
-        <path d="M7.75 16.25l-2.15 2.15" />
-        <path d="M6 12l-3 0" />
-        <path d="M7.75 7.75l-2.15 -2.15" />
-      </svg>
+    <div className="flex items-center justify-center h-screen bg-white dark:bg-black">
+      <div className="relative">
+        {/* Layer 1 - Outermost ring */}
+        <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-gray-900 dark:border-t-gray-100 animate-spin w-24 h-24"></div>
+
+        {/* Layer 2 */}
+        <div
+          className="absolute inset-2 rounded-full border-4 border-transparent border-r-gray-700 dark:border-r-gray-300 animate-spin w-20 h-20"
+          style={{ animationDirection: "reverse", animationDuration: "1.2s" }}
+        ></div>
+
+        {/* Layer 3 */}
+        <div
+          className="absolute inset-4 rounded-full border-4 border-transparent border-b-gray-600 dark:border-b-gray-400 animate-spin w-16 h-16"
+          style={{ animationDuration: "0.8s" }}
+        ></div>
+
+        {/* Layer 4 */}
+        <div
+          className="absolute inset-6 rounded-full border-4 border-transparent border-l-gray-500 dark:border-l-gray-500 animate-spin w-12 h-12"
+          style={{ animationDirection: "reverse", animationDuration: "1.5s" }}
+        ></div>
+
+        {/* Layer 5 - Innermost ring */}
+        <div
+          className="absolute inset-8 rounded-full border-4 border-transparent border-t-gray-400 dark:border-t-gray-600 animate-spin w-8 h-8"
+          style={{ animationDuration: "1s" }}
+        ></div>
+
+        {/* Center pulsing dot */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-2 h-2 bg-gray-900 dark:bg-gray-100 rounded-full animate-pulse"></div>
+        </div>
+      </div>
     </div>
   );
 };

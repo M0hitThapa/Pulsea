@@ -18,7 +18,9 @@ export const projects = pgTable("projects", {
 
 export const feedbacks = pgTable("feedback", {
   id: serial("id").primaryKey(),
-  projectId: integer("project_id"),
+  projectId: integer("project_id")
+    .notNull()
+    .references(() => projects.id, { onDelete: "cascade" }), // Added cascade delete
   userName: text("user_name"),
   userEmail: text("user_email"),
   message: text("message"),

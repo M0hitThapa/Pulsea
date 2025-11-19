@@ -18,6 +18,8 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { db } from "@/db";
 import Link from "next/link";
+import CustomButton from "./custom-button";
+import { Button } from "./ui/button";
 type Feedback = InferSelectModel<typeof feedbacks>;
 
 const categories = [
@@ -511,6 +513,8 @@ function DetailPanel({
                   </p>
                 </div>
               )}
+
+              <Button>Email</Button>
             </div>
           </div>
         </div>

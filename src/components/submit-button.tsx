@@ -11,10 +11,10 @@ const SubmitButton = () => {
   return (
     <CustomButton type="submit">
       {pending ? (
-        <>
+        <div className="flex gap-1 items-center justify-center">
           <Loader2 className="animate-spin mr-2 h-4 w-4" />
           creating...
-        </>
+        </div>
       ) : (
         "create project"
       )}

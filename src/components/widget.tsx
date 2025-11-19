@@ -65,7 +65,7 @@ export const Widget = ({}) => {
             side="top"
             align="end"
             sideOffset={8}
-            className="w-[370px] px-5 py-4 border border-neutral-200 relative bg-white dark:bg-neutral-950 rounded-lg "
+            className="w-[370px] px-5 py-4 border border-neutral-200 dark:border-neutral-800 relative bg-white dark:bg-neutral-950 rounded-lg "
           >
             <div className=" relative">
               {submitted ? (
@@ -81,16 +81,16 @@ export const Widget = ({}) => {
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="icon icon-tabler icons-tabler-outline icon-tabler-circle-check text-green-600"
+                      className="icon icon-tabler icons-tabler-outline icon-tabler-circle-check text-green-700 dark:text-green-500"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                       <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
                       <path d="M9 12l2 2l4 -4" />
                     </svg>
-                    <h3 className="text-md font-bold text-neutral-900 mb-2 font-title">
-                      Feedback received (Demo)
+                    <h3 className="text-md font-bold text-neutral-900 mb-2 font-title dark:text-neutral-200">
+                      Feedback received
                     </h3>
-                    <p className="text-base text-neutral-500">
+                    <p className="text-base text-neutral-600 dark:text-neutral-400">
                       This is only a preview for the landing page.
                     </p>
                   </div>
@@ -98,24 +98,24 @@ export const Widget = ({}) => {
               ) : (
                 <div>
                   <div className="mb-4">
-                    <h3 className="text-2xl font-bold text-neutral-900 mb-1 font-title flex gap-2">
+                    <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-1 font-title flex gap-2">
                       Share Your Thoughts
                     </h3>
-                    <p className="text-sm text-neutral-500">
+                    <p className="text-sm text-neutral-500 dark:text-neutral-400">
                       We&apos;d love to hear what you think.
                     </p>
                   </div>
 
                   <form onSubmit={submit} className="space-y-4">
                     <div>
-                      <Label className="text-neutral-700 font-semibold mb-1 block font-title">
+                      <Label className="text-neutral-700 dark:text-neutral-300 font-semibold mb-1 block font-title">
                         Name
                       </Label>
                       <Input placeholder="John Doe" className="h-10" />
                     </div>
 
                     <div>
-                      <Label className="text-neutral-700 font-semibold mb-1 block font-title">
+                      <Label className="text-neutral-700 dark:text-neutral-300 font-semibold mb-1 block font-title">
                         Email
                       </Label>
                       <Input
@@ -126,7 +126,7 @@ export const Widget = ({}) => {
                     </div>
 
                     <div>
-                      <Label className="text-neutral-700 font-semibold mb-2 block font-title">
+                      <Label className="text-neutral-700 dark:text-neutral-300 font-semibold mb-2 block font-title">
                         Your Feedback
                       </Label>
                       <Textarea
@@ -136,7 +136,7 @@ export const Widget = ({}) => {
                     </div>
 
                     <div className="pt-2">
-                      <Label className="text-neutral-700 font-semibold mb-2 block font-title">
+                      <Label className="text-neutral-700 dark:text-neutral-300 font-semibold mb-2 block font-title">
                         Rate Your Experience
                       </Label>
                       <div className="flex gap-2 mb-3">
@@ -167,10 +167,10 @@ export const Widget = ({}) => {
                     </div>
 
                     <Button
-                      className="w-full bg-neutral-900 dark:bg-neutral-100"
+                      className="w-full bg-neutral-900 dark:bg-neutral-100 text-neutral-50 dark:text-neutral-900  "
                       type="submit"
                     >
-                      Submit Feedback (Demo)
+                      Submit Feedback
                     </Button>
                   </form>
                 </div>
