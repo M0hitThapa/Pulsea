@@ -1,37 +1,32 @@
 const Loading = () => {
   return (
-    <div className="flex items-center justify-center h-screen bg-white dark:bg-black">
-      <div className="relative">
-        {/* Layer 1 - Outermost ring */}
-        <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-gray-900 dark:border-t-gray-100 animate-spin w-24 h-24"></div>
+    <div className="flex items-center justify-center h-screen bg-gray-50 dark:bg-[#0a0a0a]">
+      {/* Container - Scale this to resize the whole loader */}
+      <div className="relative w-24 h-24">
+        {/* Outer Glow (Atmosphere) */}
+        <div className="absolute inset-0 rounded-full bg-blue-500/20 blur-xl animate-pulse"></div>
 
-        {/* Layer 2 */}
+        {/* Layer 1: Outer Orbit */}
         <div
-          className="absolute inset-2 rounded-full border-4 border-transparent border-r-gray-700 dark:border-r-gray-300 animate-spin w-20 h-20"
-          style={{ animationDirection: "reverse", animationDuration: "1.2s" }}
+          className="absolute inset-0 rounded-full border-[3px] border-transparent border-t-blue-500 dark:border-t-cyan-400 shadow-[0_0_10px_rgba(59,130,246,0.5)] animate-spin"
+          style={{ animationDuration: "3s" }}
         ></div>
 
-        {/* Layer 3 */}
+        {/* Layer 2: Middle Orbit (Counter-rotating) */}
         <div
-          className="absolute inset-4 rounded-full border-4 border-transparent border-b-gray-600 dark:border-b-gray-400 animate-spin w-16 h-16"
-          style={{ animationDuration: "0.8s" }}
+          className="absolute inset-2 rounded-full border-[3px] border-transparent border-r-indigo-500 dark:border-r-violet-400 shadow-[0_0_10px_rgba(99,102,241,0.5)] animate-spin"
+          style={{ animationDirection: "reverse", animationDuration: "2s" }}
         ></div>
 
-        {/* Layer 4 */}
+        {/* Layer 3: Inner Orbit */}
         <div
-          className="absolute inset-6 rounded-full border-4 border-transparent border-l-gray-500 dark:border-l-gray-500 animate-spin w-12 h-12"
-          style={{ animationDirection: "reverse", animationDuration: "1.5s" }}
+          className="absolute inset-5 rounded-full border-[3px] border-transparent border-l-purple-500 dark:border-l-fuchsia-400 shadow-[0_0_10px_rgba(168,85,247,0.5)] animate-spin"
+          style={{ animationDuration: "1.5s" }}
         ></div>
 
-        {/* Layer 5 - Innermost ring */}
-        <div
-          className="absolute inset-8 rounded-full border-4 border-transparent border-t-gray-400 dark:border-t-gray-600 animate-spin w-8 h-8"
-          style={{ animationDuration: "1s" }}
-        ></div>
-
-        {/* Center pulsing dot */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-2 h-2 bg-gray-900 dark:bg-gray-100 rounded-full animate-pulse"></div>
+        {/* Core: The Energy Source */}
+        <div className="absolute inset-[28px] rounded-full border-2 border-white/20 bg-white/10 backdrop-blur-sm flex items-center justify-center">
+          <div className="w-2 h-2 bg-white rounded-full animate-ping"></div>
         </div>
       </div>
     </div>

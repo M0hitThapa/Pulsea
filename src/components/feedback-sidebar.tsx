@@ -6,98 +6,82 @@ import { InferSelectModel } from "drizzle-orm";
 import {
   ArchiveX,
   Star,
-  Mail,
   Inbox,
-  File,
+  FileText,
   Search,
   Menu,
   X,
   FolderHeart,
-  HeartPlus,
+  Heart,
+  MoreVertical,
+  Reply,
+  Trash2,
+  User,
+  Calendar,
+  Mail,
 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { db } from "@/db";
 import Link from "next/link";
-import CustomButton from "./custom-button";
 import { Button } from "./ui/button";
+
 type Feedback = InferSelectModel<typeof feedbacks>;
 
-const categories = [
-  {
-    title: "Inbox",
-    icon: Inbox,
-    count: 0,
-    filter: "all",
-  },
-  {
-    title: "Favourites",
-    icon: FolderHeart,
-    count: 0,
-    filter: "favourites",
-  },
-  {
-    title: "5 Stars",
-    icon: Star,
-    count: 0,
-    filter: 5,
-  },
-  {
-    title: "4 Stars",
-    icon: Star,
-    count: 0,
-    filter: 4,
-  },
-  {
-    title: "Low Ratings",
-    icon: ArchiveX,
-    count: 0,
-    filter: "low",
-  },
-  {
-    title: "No Rating",
-    icon: File,
-    count: 0,
-    filter: null,
-  },
-];
+// --- Utility Components ---
+
+function cn(...classes: (string | undefined | null | false)[]) {
+  return classes.filter(Boolean).join(" ");
+}
+
+function Avatar({
+  name,
+  email,
+}: {
+  name: string | null;
+  email: string | null;
+}) {
+  const initials = name
+    ? name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .substring(0, 2)
+        .toUpperCase()
+    : email
+    ? email.substring(0, 2).toUpperCase()
+    : "??";
+
+  return (
+    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-medium text-sm shadow-sm ring-2 ring-white dark:ring-zinc-900">
+      {initials}
+    </div>
+  );
+}
 
 function StarRating({ rating }: { rating: number | null }) {
-  if (rating === null) {
-    return <span className="dark:text-neutral-400">N/A</span>;
-  }
+  if (rating === null) return null;
 
   return (
-    <div className="flex items-center gap-0.5">
-      <span className="text-xs font-medium text-gray-700 dark:text-neutral-300">
+    <div className="flex items-center gap-0.5 bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50 px-1.5 py-0.5 rounded-md">
+      <span className="text-xs font-bold text-amber-700 dark:text-amber-500">
         {rating}
       </span>
-      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+      <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
     </div>
   );
 }
 
-function LargeStarRating({ rating }: { rating: number | null }) {
-  if (rating === null) {
-    return <span className="text-gray-500 dark:text-neutral-400">N/A</span>;
-  }
-  return (
-    <div className="flex">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          className={`h-5 w-5 ${
-            i < rating
-              ? "fill-yellow-400 text-yellow-400"
-              : "text-gray-300 dark:text-neutral-600"
-          }`}
-        />
-      ))}
-      <span className="ml-3 text-md text-neutral-500 dark:text-neutral-400">
-        {rating} out of 5 stars
-      </span>
-    </div>
-  );
-}
+// --- Configuration ---
+
+const categories = [
+  { title: "Inbox", icon: Inbox, count: 0, filter: "all" },
+  { title: "Favourites", icon: FolderHeart, count: 0, filter: "favourites" },
+  { title: "5 Stars", icon: Star, count: 0, filter: 5 },
+  { title: "4 Stars", icon: Star, count: 0, filter: 4 },
+  { title: "Low Ratings", icon: ArchiveX, count: 0, filter: "low" },
+  { title: "No Rating", icon: FileText, count: 0, filter: null },
+];
+
+// --- Sub-Components ---
 
 function Sidebar({
   isOpen,
@@ -116,85 +100,99 @@ function Sidebar({
     <>
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/20 dark:bg-black/40 z-40 lg:hidden"
+          className="fixed inset-0 bg-zinc-950/40 backdrop-blur-sm z-40 lg:hidden"
           onClick={onClose}
         />
       )}
 
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-neutral-100 dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 transform transition-transform duration-200 ease-in-out lg:transform-none ${
+        className={cn(
+          "fixed lg:static inset-y-0 left-0 z-50 w-64 bg-zinc-50 dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 transform transition-transform duration-300 ease-in-out lg:transform-none flex flex-col",
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        }`}
+        )}
       >
-        <div className="flex flex-col h-full">
-          <div className="p-4 border-b border-neutral-200 dark:border-neutral-800 lg:border-0 dark:lg:border-0">
-            <div className="flex justify-between items-center">
-              <Link href="/">
-                <div className="flex items-center gap-3">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="icon icon-tabler icons-tabler-filled icon-tabler-bubble-text size-10 text-neutral-900 dark:text-neutral-100 p-1 border border-neutral-200 dark:border-neutral-700 rounded-md shadow-inner shadow-neutral-300 dark:shadow-neutral-700"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M12.4 2l.253 .005a6.34 6.34 0 0 1 5.235 3.166l.089 .163l.178 .039a6.33 6.33 0 0 1 4.254 3.406l.105 .228a6.334 6.334 0 0 1 -5.74 8.865l-.144 -.002l-.037 .052a5.26 5.26 0 0 1 -5.458 1.926l-.186 -.051l-3.435 2.06a1 1 0 0 1 -1.508 -.743l-.006 -.114v-2.435l-.055 -.026a3.67 3.67 0 0 1 -1.554 -1.498l-.102 -.199a3.67 3.67 0 0 1 -.312 -2.14l.038 -.21l-.116 -.092a5.8 5.8 0 0 1 -1.887 -6.025l.071 -.238a5.8 5.8 0 0 1 5.42 -4.004h.157l.15 -.165a6.33 6.33 0 0 1 4.33 -1.963zm1.6 11h-5a1 1 0 0 0 0 2h5a1 1 0 0 0 0 -2m3 -4h-10a1 1 0 1 0 0 2h10a1 1 0 0 0 0 -2" />
-                  </svg>
-                  <span className="text-2xl font-semibold text-neutral-950 dark:text-neutral-100 text-shadow-lg">
-                    Pulsea
-                  </span>
-                </div>
-              </Link>
-              <button onClick={onClose} className="lg:hidden">
-                <X className="h-5 w-5 text-neutral-700 dark:text-neutral-400" />
-              </button>
+        <div className="p-5 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="p-2 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm group-hover:shadow-md transition-all">
+              <div className="h-5 w-5 bg-blue-600 rounded-md" />
+            </div>
+            <span className="text-lg font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
+              Pulsea
+            </span>
+          </Link>
+          <button
+            onClick={onClose}
+            className="lg:hidden p-1 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800"
+          >
+            <X className="h-5 w-5 text-zinc-500" />
+          </button>
+        </div>
+
+        <div className="px-3 pb-4">
+          <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider px-3 mb-2">
+            Menu
+          </div>
+          <nav className="space-y-0.5">
+            {categories.map((category) => {
+              const Icon = category.icon;
+              const isActive = activeFilter === category.filter;
+              const count = counts[String(category.filter)] || 0;
+
+              return (
+                <button
+                  key={category.title}
+                  onClick={() => {
+                    onFilterChange(category.filter);
+                    onClose();
+                  }}
+                  className={cn(
+                    "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all duration-200",
+                    isActive
+                      ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200 dark:ring-zinc-800 font-medium"
+                      : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-900/50 hover:text-zinc-900 dark:hover:text-zinc-200"
+                  )}
+                >
+                  <div className="flex items-center gap-3">
+                    <Icon
+                      className={cn(
+                        "h-4 w-4",
+                        isActive
+                          ? "text-blue-600 dark:text-blue-500"
+                          : "text-zinc-500"
+                      )}
+                    />
+                    <span>{category.title}</span>
+                  </div>
+                  {count > 0 && (
+                    <span
+                      className={cn(
+                        "text-xs px-1.5 py-0.5 rounded-md min-w-[1.25rem] text-center",
+                        isActive
+                          ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
+                          : "text-zinc-400"
+                      )}
+                    >
+                      {count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+
+        <div className="mt-auto p-4 border-t border-zinc-200 dark:border-zinc-800">
+          <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-200/50 dark:hover:bg-zinc-900/50 cursor-pointer transition-colors">
+            <div className="h-8 w-8 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center">
+              <User className="h-4 w-4 text-zinc-500" />
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
+                Admin Account
+              </p>
+              <p className="text-xs text-zinc-500 truncate">admin@pulsea.com</p>
             </div>
           </div>
-          <nav className="flex-1 overflow-y-auto p-2">
-            <ul className="space-y-1">
-              {categories.map((category) => {
-                const Icon = category.icon;
-                const isActive = activeFilter === category.filter;
-                const count = counts[String(category.filter)] || 0;
-
-                return (
-                  <li key={category.title}>
-                    <button
-                      onClick={() => {
-                        onFilterChange(category.filter);
-                        onClose();
-                      }}
-                      className={`w-full flex items-center justify-between gap-3 px-4 py-2 rounded-sm transition-colors ${
-                        isActive
-                          ? "bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-medium"
-                          : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800"
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Icon
-                          className={`h-5 w-5 ${
-                            isActive
-                              ? "text-red-600 dark:text-red-500"
-                              : "text-neutral-600 dark:text-neutral-400"
-                          }`}
-                        />
-                        <span className="text-md font-semibold">
-                          {category.title}
-                        </span>
-                      </div>
-                      {count > 0 && (
-                        <span className="text-xs text-neutral-600 dark:text-neutral-400">
-                          {count}
-                        </span>
-                      )}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
         </div>
       </aside>
     </>
@@ -217,48 +215,43 @@ function FeedbackListItem({
   return (
     <div
       onClick={onSelect}
-      className={`flex items-start gap-3 px-4 py-3 border-b border-gray-200 dark:border-neutral-700 cursor-pointer transition-colors ${
+      className={cn(
+        "group relative flex gap-3 px-4 py-4 border-b border-zinc-100 dark:border-zinc-800 cursor-pointer transition-all duration-200",
         isSelected
-          ? "bg-blue-50 dark:bg-blue-950/30"
-          : "hover:bg-gray-50 dark:hover:bg-neutral-800"
-      }`}
+          ? "bg-blue-50/50 dark:bg-blue-950/20 border-l-2 border-l-blue-500 pl-[14px]" // slightly less padding left to account for border
+          : "hover:bg-zinc-50 dark:hover:bg-zinc-900/50 border-l-2 border-l-transparent"
+      )}
     >
-      {/* Star */}
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleStar();
-            }}
-            className="pt-1 hover:scale-110 transition-transform"
-          >
-            <HeartPlus
-              className={`h-5 w-5 cursor-pointer ${
-                isStarred
-                  ? "fill-rose-500 text-rose-500"
-                  : "text-neutral-400 dark:text-neutral-600 hover:text-rose-500 dark:hover:text-rose-500"
-              }`}
-            />
-          </button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Add to favourites</p>
-        </TooltipContent>
-      </Tooltip>
+      <div className="flex-shrink-0 pt-1">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleStar();
+          }}
+          className="text-zinc-300 dark:text-zinc-600 hover:scale-110 transition-transform"
+        >
+          <Heart
+            className={cn(
+              "h-5 w-5 transition-colors",
+              isStarred ? "fill-rose-500 text-rose-500" : "hover:text-rose-400"
+            )}
+          />
+        </button>
+      </div>
 
-      {/* Content */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-start justify-between gap-2 mb-1">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <span className="font-semibold text-md text-neutral-900 dark:text-neutral-100 truncate">
-                {feedback.userName || "Anonymous"}
-              </span>
-              <StarRating rating={feedback.rating} />
-            </div>
-          </div>
-          <span className="text-sm text-neutral-500 dark:text-neutral-400 whitespace-nowrap">
+        <div className="flex items-center justify-between gap-2 mb-1">
+          <span
+            className={cn(
+              "text-sm font-semibold truncate",
+              isSelected
+                ? "text-blue-900 dark:text-blue-100"
+                : "text-zinc-900 dark:text-zinc-100"
+            )}
+          >
+            {feedback.userName || "Anonymous"}
+          </span>
+          <span className="text-xs text-zinc-400 whitespace-nowrap font-medium">
             {feedback.createdAt &&
               new Date(feedback.createdAt).toLocaleDateString("en-US", {
                 month: "short",
@@ -267,13 +260,18 @@ function FeedbackListItem({
           </span>
         </div>
 
-        <div className="text-sm text-neutral-600 dark:text-neutral-400 mb-1 truncate">
-          {feedback.userEmail || "No email"}
+        <div className="flex items-center justify-between mb-1.5">
+          <div className="text-xs text-zinc-500 dark:text-zinc-400 truncate pr-4">
+            {feedback.userEmail || "No email provided"}
+          </div>
+          <StarRating rating={feedback.rating} />
         </div>
 
-        <div className="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">
-          {feedback.message || "No message provided"}
-        </div>
+        <p className="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2 leading-relaxed">
+          {feedback.message || (
+            <span className="italic text-zinc-400">No message content</span>
+          )}
+        </p>
       </div>
     </div>
   );
@@ -284,31 +282,23 @@ function DetailPanel({
   onClose,
 }: {
   feedback: Feedback | null;
-  onClose?: () => void;
+  onClose: () => void;
 }) {
   if (!feedback) {
     return (
-      <div className="hidden lg:flex flex-1 items-center justify-center bg-white dark:bg-neutral-900">
-        <div className="text-center">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-50 dark:bg-neutral-800 mb-6">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="40"
-              height="40"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-gray-300 dark:text-neutral-600"
-            >
-              <rect width="20" height="16" x="2" y="4" rx="2" />
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-            </svg>
+      <div className="hidden lg:flex flex-1 items-center justify-center bg-white dark:bg-zinc-950">
+        <div className="flex flex-col items-center max-w-xs text-center p-6">
+          <div className="w-16 h-16 bg-zinc-100 dark:bg-zinc-900 rounded-2xl flex items-center justify-center mb-4 rotate-3">
+            <div className="w-16 h-16 bg-zinc-50 dark:bg-zinc-800 rounded-2xl flex items-center justify-center -rotate-6 shadow-sm border border-zinc-200 dark:border-zinc-700">
+              <Inbox className="h-8 w-8 text-zinc-400" />
+            </div>
           </div>
-          <p className="text-gray-400 dark:text-neutral-500 font-light">
-            Select a feedback to view details
+          <h3 className="text-zinc-900 dark:text-zinc-100 font-medium text-lg mb-2">
+            No Feedback Selected
+          </h3>
+          <p className="text-zinc-500 text-sm">
+            Select an item from the list to view details, ratings, and user
+            information.
           </p>
         </div>
       </div>
@@ -316,212 +306,121 @@ function DetailPanel({
   }
 
   return (
-    <div className="flex-1 bg-white dark:bg-neutral-900 overflow-hidden flex flex-col">
-      {/* Mobile header */}
-      {onClose && (
-        <div className="lg:hidden flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-neutral-800">
+    <div className="flex-1 bg-white dark:bg-zinc-950 flex flex-col h-full">
+      {/* Header Toolbar */}
+      <header className="flex items-center justify-between px-6 py-4 border-b border-zinc-100 dark:border-zinc-800 sticky top-0 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md z-10">
+        <div className="flex items-center gap-2">
           <button
             onClick={onClose}
-            className="flex items-center gap-2 text-sm text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-neutral-200 transition-colors"
+            className="lg:hidden mr-2 p-2 -ml-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
-            Back
+            <X className="h-5 w-5 text-zinc-500" />
+          </button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors">
+                <ArchiveX className="h-4 w-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>Archive</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md text-zinc-500 hover:text-red-600 transition-colors">
+                <Trash2 className="h-4 w-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>Delete</TooltipContent>
+          </Tooltip>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-zinc-400 font-mono">
+            ID: #{feedback.id}
+          </span>
+          <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md text-zinc-500">
+            <MoreVertical className="h-4 w-4" />
           </button>
         </div>
-      )}
+      </header>
 
-      {/* Content */}
+      {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
-        <div className="max-w-3xl mx-auto px-6 py-12">
-          {/* Header with delete action */}
-          <div className="flex items-start justify-between mb-12">
-            <div className="space-y-4">
-              <div className="inline-flex px-3 py-1 rounded-full bg-gray-100 dark:bg-neutral-800 text-xs font-medium text-gray-600 dark:text-neutral-400">
-                Feedback
-              </div>
-              <LargeStarRating rating={feedback.rating} />
-            </div>
-            <button className="p-2 hover:bg-gray-50 dark:hover:bg-neutral-800 rounded-lg transition-colors group">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-gray-400 group-hover:text-red-500 transition-colors"
-              >
-                <path d="M3 6h18" />
-                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-              </svg>
-            </button>
-          </div>
-
-          {/* User Information */}
-          <div className="space-y-8">
-            <div className="space-y-6">
-              <h2 className="text-sm font-medium text-gray-500 dark:text-neutral-500 uppercase tracking-wide">
-                User Details
-              </h2>
-
-              <div className="space-y-4 pl-1">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-neutral-800">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-gray-500 dark:text-neutral-400"
-                    >
-                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                      <circle cx="12" cy="7" r="4" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-gray-900 dark:text-neutral-100 font-medium">
-                      {feedback.userName || "Anonymous"}
-                    </p>
-                    <p className="text-sm text-gray-500 dark:text-neutral-500">
-                      Name
-                    </p>
-                  </div>
+        <div className="max-w-4xl mx-auto px-6 py-8">
+          {/* Top Card: User Info & Meta */}
+          <div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-xl border border-zinc-100 dark:border-zinc-800 p-6 mb-8 flex flex-col sm:flex-row sm:items-start justify-between gap-6">
+            <div className="flex items-start gap-4">
+              <Avatar name={feedback.userName} email={feedback.userEmail} />
+              <div>
+                <h1 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+                  {feedback.userName || "Anonymous User"}
+                </h1>
+                <div className="flex items-center gap-2 text-sm text-zinc-500 mt-1">
+                  <Mail className="h-3.5 w-3.5" />
+                  <a
+                    href={`mailto:${feedback.userEmail}`}
+                    className="hover:text-blue-600 hover:underline"
+                  >
+                    {feedback.userEmail || "No email provided"}
+                  </a>
                 </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-neutral-800">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-gray-500 dark:text-neutral-400"
-                    >
-                      <rect width="20" height="16" x="2" y="4" rx="2" />
-                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-gray-900 dark:text-neutral-100 font-medium">
-                      {feedback.userEmail || "Not provided"}
-                    </p>
-                    <p className="text-sm text-gray-500 dark:text-neutral-500">
-                      Email
-                    </p>
-                  </div>
-                </div>
-
-                {feedback.createdAt && (
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-neutral-800">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="text-gray-500 dark:text-neutral-400"
-                      >
-                        <rect
-                          width="18"
-                          height="18"
-                          x="3"
-                          y="4"
-                          rx="2"
-                          ry="2"
-                        />
-                        <line x1="16" x2="16" y1="2" y2="6" />
-                        <line x1="8" x2="8" y1="2" y2="6" />
-                        <line x1="3" x2="21" y1="10" y2="10" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-gray-900 dark:text-neutral-100 font-medium">
-                        {new Date(feedback.createdAt).toLocaleDateString(
-                          "en-US",
-                          {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          }
-                        )}
-                      </p>
-                      <p className="text-sm text-gray-500 dark:text-neutral-500">
-                        {new Date(feedback.createdAt).toLocaleTimeString(
-                          "en-US",
-                          {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          }
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
 
-            {/* Divider */}
-            <div className="border-t border-gray-100 dark:border-neutral-800" />
-
-            {/* Message */}
-            <div className="space-y-6">
-              <h2 className="text-sm font-medium text-gray-500 dark:text-neutral-500 uppercase tracking-wide">
-                Message
-              </h2>
-
-              {feedback.message ? (
-                <div className="bg-gray-50 dark:bg-neutral-800/50 rounded-lg p-6">
-                  <p className="text-gray-700 dark:text-neutral-300 leading-relaxed whitespace-pre-wrap">
-                    {feedback.message}
-                  </p>
-                </div>
-              ) : (
-                <div className="bg-gray-50 dark:bg-neutral-800/50 rounded-lg p-6 text-center">
-                  <p className="text-gray-400 dark:text-neutral-500 italic text-sm">
-                    No message provided
-                  </p>
+            <div className="flex flex-col items-start sm:items-end gap-2">
+              <div className="flex items-center gap-2 text-sm text-zinc-500 bg-white dark:bg-zinc-900 px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 shadow-sm">
+                <Calendar className="h-3.5 w-3.5" />
+                {feedback.createdAt
+                  ? new Date(feedback.createdAt).toLocaleString(undefined, {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })
+                  : "N/A"}
+              </div>
+              {feedback.rating !== null && (
+                <div className="flex items-center gap-1 text-amber-500">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={cn(
+                        "h-4 w-4",
+                        i < (feedback.rating as number)
+                          ? "fill-current"
+                          : "text-zinc-300 dark:text-zinc-700"
+                      )}
+                    />
+                  ))}
                 </div>
               )}
-
-              <Button>Email</Button>
             </div>
           </div>
+
+          {/* Main Content */}
+          <div className="prose dark:prose-invert max-w-none">
+            <h3 className="text-sm font-medium text-zinc-400 uppercase tracking-wider mb-4">
+              Feedback Message
+            </h3>
+            <div className="text-lg text-zinc-800 dark:text-zinc-200 leading-relaxed whitespace-pre-wrap">
+              {feedback.message || "No content."}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Reply Action Footer */}
+      <div className="p-6 border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/30">
+        <div className="max-w-4xl mx-auto">
+          <Button className="gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg transition-all">
+            <Reply className="h-4 w-4" />
+            Reply via Email
+          </Button>
         </div>
       </div>
     </div>
   );
 }
+
+// --- Main Layout Component ---
 
 export function FeedbackSidebar({
   feedbackData,
@@ -536,11 +435,9 @@ export function FeedbackSidebar({
   const [starredIds, setStarredIds] = React.useState<Set<number>>(new Set());
   const [showDetail, setShowDetail] = React.useState(false);
 
-  // Filter feedbacks
+  // Logic mostly unchanged, just refined
   const filteredFeedbacks = React.useMemo(() => {
     let filtered = [...feedbackData];
-
-    // Apply category filter
     if (activeFilter === "favourites") {
       filtered = filtered.filter((f) => starredIds.has(f.id));
     } else if (activeFilter === 5 || activeFilter === 4) {
@@ -551,7 +448,6 @@ export function FeedbackSidebar({
       filtered = filtered.filter((f) => f.rating === null);
     }
 
-    // Apply search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
@@ -561,13 +457,11 @@ export function FeedbackSidebar({
           f.message?.toLowerCase().includes(query)
       );
     }
-
     return filtered;
   }, [feedbackData, activeFilter, searchQuery, starredIds]);
 
-  // Calculate counts
   const counts = React.useMemo(() => {
-    const result: Record<string, number> = {
+    return {
       all: feedbackData.length,
       favourites: starredIds.size,
       "5": feedbackData.filter((f) => f.rating === 5).length,
@@ -576,17 +470,13 @@ export function FeedbackSidebar({
         .length,
       null: feedbackData.filter((f) => f.rating === null).length,
     };
-    return result;
   }, [feedbackData, starredIds]);
 
   const handleToggleStar = (id: number) => {
     setStarredIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
   };
@@ -597,8 +487,7 @@ export function FeedbackSidebar({
   };
 
   return (
-    <div className="flex h-screen bg-neutral-100 dark:bg-neutral-950 overflow-hidden">
-      {/* Sidebar */}
+    <div className="flex h-screen bg-white dark:bg-zinc-950 overflow-hidden font-sans text-zinc-900 dark:text-zinc-100">
       <Sidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
@@ -607,89 +496,83 @@ export function FeedbackSidebar({
         counts={counts}
       />
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Content Area */}
-        <div className="flex-1 flex overflow-hidden">
-          {/* Feedback List */}
-          <div
-            className={`${
-              showDetail ? "hidden" : "flex"
-            } lg:flex w-full lg:w-96 xl:w-md bg-white dark:bg-neutral-900 border-r border-gray-200 dark:border-neutral-800 flex-col overflow-hidden`}
-          >
-            {/* List Header */}
-            <header className="bg-white dark:bg-neutral-900 border-b border-gray-200 dark:border-neutral-800 px-4 py-3">
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => setSidebarOpen(true)}
-                  className="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full"
-                >
-                  <Menu className="h-5 w-5 text-gray-600 dark:text-neutral-400" />
-                </button>
-
-                {/* Search */}
-                <div className="flex-1 max-w-[430px] relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-neutral-500" />
-                  <input
-                    type="text"
-                    placeholder="Search feedback"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder:text-gray-500 dark:placeholder:text-neutral-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:bg-white dark:focus:bg-neutral-700 transition-colors"
-                  />
-                </div>
-              </div>
-            </header>
-            <div className="px-4 py-3 border-b border-gray-200 dark:border-neutral-800">
-              <div className="flex items-center justify-between">
-                <h2 className="font-medium text-gray-900 dark:text-neutral-100">
-                  {categories.find((c) => c.filter === activeFilter)?.title ||
-                    "Inbox"}
-                </h2>
-                <span className="text-sm text-gray-500 dark:text-neutral-400">
-                  {filteredFeedbacks.length}
-                </span>
-              </div>
+      {/* Main Content Wrapper */}
+      <div className="flex-1 flex w-full overflow-hidden relative">
+        {/* List View */}
+        <div
+          className={cn(
+            "w-full lg:w-[400px] xl:w-[450px] bg-white dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 flex flex-col z-0",
+            showDetail ? "hidden lg:flex" : "flex"
+          )}
+        >
+          {/* List Search Header */}
+          <div className="p-4 border-b border-zinc-100 dark:border-zinc-800">
+            <div className="flex items-center gap-3 mb-4">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="lg:hidden p-2 -ml-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md"
+              >
+                <Menu className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
+              </button>
+              <h2 className="text-xl font-bold tracking-tight">
+                {categories.find((c) => c.filter === activeFilter)?.title ||
+                  "Inbox"}
+              </h2>
             </div>
-
-            {/* List */}
-            <div className="flex-1 overflow-y-auto">
-              {filteredFeedbacks.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full text-gray-400 dark:text-neutral-500 p-8 text-center">
-                  <Inbox className="h-16 w-16 mb-4 opacity-30" />
-                  <p className="text-lg font-medium mb-1">No feedback found</p>
-                  <p className="text-sm">
-                    {searchQuery
-                      ? "Try a different search term"
-                      : "This folder is empty"}
-                  </p>
-                </div>
-              ) : (
-                filteredFeedbacks.map((feedback) => (
-                  <FeedbackListItem
-                    key={feedback.id}
-                    feedback={feedback}
-                    isSelected={selectedFeedback?.id === feedback.id}
-                    isStarred={starredIds.has(feedback.id)}
-                    onSelect={() => handleSelectFeedback(feedback)}
-                    onToggleStar={() => handleToggleStar(feedback.id)}
-                  />
-                ))
-              )}
+            <div className="relative group">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors" />
+              <input
+                type="text"
+                placeholder="Search feedback..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 bg-zinc-100 dark:bg-zinc-900 border-transparent focus:bg-white dark:focus:bg-zinc-900 border focus:border-blue-500 dark:focus:border-blue-500 rounded-lg text-sm transition-all outline-none placeholder:text-zinc-500"
+              />
             </div>
           </div>
 
-          {/* Detail Panel */}
-          <div
-            className={`${
-              !showDetail ? "hidden lg:flex" : "flex"
-            } flex-1 overflow-hidden`}
-          >
-            <DetailPanel
-              feedback={selectedFeedback}
-              onClose={() => setShowDetail(false)}
-            />
+          {/* List Content */}
+          <div className="flex-1 overflow-y-auto  scrollbar-hide ">
+            {filteredFeedbacks.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-64 text-center px-6">
+                <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center mb-3">
+                  <Search className="h-6 w-6 text-zinc-300" />
+                </div>
+                <p className="text-zinc-900 dark:text-zinc-100 font-medium">
+                  No results found
+                </p>
+                <p className="text-sm text-zinc-500 mt-1">
+                  Try adjusting your filters or search query.
+                </p>
+              </div>
+            ) : (
+              filteredFeedbacks.map((feedback) => (
+                <FeedbackListItem
+                  key={feedback.id}
+                  feedback={feedback}
+                  isSelected={selectedFeedback?.id === feedback.id}
+                  isStarred={starredIds.has(feedback.id)}
+                  onSelect={() => handleSelectFeedback(feedback)}
+                  onToggleStar={() => handleToggleStar(feedback.id)}
+                />
+              ))
+            )}
           </div>
+        </div>
+
+        {/* Detail View */}
+        <div
+          className={cn(
+            "flex-1 bg-white dark:bg-zinc-950 relative",
+            !showDetail
+              ? "hidden lg:flex"
+              : "flex absolute inset-0 lg:static z-10"
+          )}
+        >
+          <DetailPanel
+            feedback={selectedFeedback}
+            onClose={() => setShowDetail(false)}
+          />
         </div>
       </div>
     </div>
