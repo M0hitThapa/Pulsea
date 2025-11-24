@@ -1,32 +1,31 @@
 const Loading = () => {
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-50 dark:bg-[#0a0a0a]">
-      {/* Container - Scale this to resize the whole loader */}
-      <div className="relative w-24 h-24">
-        {/* Outer Glow (Atmosphere) */}
-        <div className="absolute inset-0 rounded-full bg-blue-500/20 blur-xl animate-pulse"></div>
-
-        {/* Layer 1: Outer Orbit */}
-        <div
-          className="absolute inset-0 rounded-full border-[3px] border-transparent border-t-blue-500 dark:border-t-cyan-400 shadow-[0_0_10px_rgba(59,130,246,0.5)] animate-spin"
-          style={{ animationDuration: "3s" }}
-        ></div>
-
-        {/* Layer 2: Middle Orbit (Counter-rotating) */}
-        <div
-          className="absolute inset-2 rounded-full border-[3px] border-transparent border-r-indigo-500 dark:border-r-violet-400 shadow-[0_0_10px_rgba(99,102,241,0.5)] animate-spin"
-          style={{ animationDirection: "reverse", animationDuration: "2s" }}
-        ></div>
-
-        {/* Layer 3: Inner Orbit */}
-        <div
-          className="absolute inset-5 rounded-full border-[3px] border-transparent border-l-purple-500 dark:border-l-fuchsia-400 shadow-[0_0_10px_rgba(168,85,247,0.5)] animate-spin"
-          style={{ animationDuration: "1.5s" }}
-        ></div>
-
-        {/* Core: The Energy Source */}
-        <div className="absolute inset-[28px] rounded-full border-2 border-white/20 bg-white/10 backdrop-blur-sm flex items-center justify-center">
-          <div className="w-2 h-2 bg-white rounded-full animate-ping"></div>
+    <div className="flex items-center justify-center h-screen bg-white dark:bg-neutral-950">
+      <div className="relative w-20 h-20">
+        <div className="absolute inset-0 rounded-full bg-linear-to-r from-rose-500/20 to-rose-500/30 blur-2xl animate-pulse"></div>
+        <div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="lucide lucide-loader-icon lucide-loader size-20 animate-spin "
+            style={{ animationDuration: "1.2s" }}
+          >
+            <path d="M12 2v4" />
+            <path d="m16.2 7.8 2.9-2.9" />
+            <path d="M18 12h4" />
+            <path d="m16.2 16.2 2.9 2.9" />
+            <path d="M12 18v4" />
+            <path d="m4.9 19.1 2.9-2.9" />
+            <path d="M2 12h4" />
+            <path d="m4.9 4.9 2.9 2.9" />
+          </svg>
         </div>
       </div>
     </div>
