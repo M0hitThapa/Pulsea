@@ -33,19 +33,8 @@ export const Navbar = () => {
     router.push("/dashboard");
   }
   return (
-    <Container>
-      <motion.nav
-        animate={{
-          boxShadow: scrolled ? "var(--shadow-acertinity)" : "none",
-          width: scrolled ? "40%" : "100%",
-          y: scrolled ? 10 : 0,
-        }}
-        transition={{
-          duration: 0.3,
-          ease: "linear",
-        }}
-        className=" inset-x-0 top-0 z-50 mx-auto flex max-w-5xl items-center justify-between rounded-full p-2"
-      >
+    <Container className="">
+      <nav className=" inset-x-0 top-0 z-50 mx-auto flex max-w-5xl items-center justify-between rounded-full p-2">
         <Link
           href="/"
           className="text-lg md:text-2xl font-semibold text-shadow-2xl flex gap-1 items-center justify-center "
@@ -63,7 +52,7 @@ export const Navbar = () => {
           </svg>
           Pulsea
         </Link>
-        <div className="flex gap-2 justify-center items-center ">
+        <div className="flex gap-2 justify-center items-center  ">
           <ModeToggle />
           <div className="rounded-md">
             {isSignedIn ? (
@@ -77,7 +66,7 @@ export const Navbar = () => {
             )}
           </div>
         </div>
-      </motion.nav>
+      </nav>
     </Container>
   );
 };
