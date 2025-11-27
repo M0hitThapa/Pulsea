@@ -14,6 +14,7 @@ export const projects = pgTable("projects", {
   description: text("description"),
   url: text("url"),
   userId: varchar("user_id"),
+  logoUrl: text("logo_url"),
 });
 
 export const feedbacks = pgTable("feedback", {
