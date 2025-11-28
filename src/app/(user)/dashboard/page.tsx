@@ -7,6 +7,8 @@ import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { ProjectListClient } from "./project-list";
 import DashNav from "./dash-nav";
+import { Sidebar } from "./dash-project";
+import { useState } from "react";
 
 const Page = async () => {
   const { userId } = await auth();
@@ -19,12 +21,13 @@ const Page = async () => {
     .from(projects)
     .where(eq(projects.userId, userId));
   return (
-    <Container>
-      <DashNav />
-      <div className="flex items-start justify-between mt-20">
+    <div>
+      <div className=" ">
+        <DashNav />
+
         <ProjectListClient initialProjects={userProjects} />
       </div>
-    </Container>
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import { FeedbackSidebar } from "@/components/feedback-sidebar";
+import { FeedbackSidebar } from "@/components/feedback/feedback-sidebar";
 import { db } from "@/db";
 import { projects as dbProjects } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -33,7 +33,10 @@ const Page = async ({
     <div>
       <div>
         {/* <Table data={project.feedbacks} /> */}
-        <FeedbackSidebar feedbackData={project.feedbacks} />
+        <FeedbackSidebar
+          projectId={parseInt(projectId)}
+          feedbackData={project.feedbacks}
+        />
       </div>
     </div>
   );

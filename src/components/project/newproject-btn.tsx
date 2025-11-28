@@ -73,7 +73,7 @@ const NewProjectButton = ({ className }: { className?: string }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <CustomButton className="flex gap-1 items-center justify-center">
+        <Button className="flex gap-1 items-center justify-center bg-neutral-800 dark:bg-neutral-200 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-4 border-2">
           {" "}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +88,7 @@ const NewProjectButton = ({ className }: { className?: string }) => {
             <path d="M3.517 6.391a1 1 0 0 1 .99 1.738c-.313 .178 -.506 .51 -.507 .868v10c0 .548 .452 1 1 1h10c.284 0 .405 -.088 .626 -.486a1 1 0 0 1 1.748 .972c-.546 .98 -1.28 1.514 -2.374 1.514h-10c-1.652 0 -3 -1.348 -3 -3v-10.002a3 3 0 0 1 1.517 -2.605" />
           </svg>{" "}
           New Project
-        </CustomButton>
+        </Button>
       </DialogTrigger>
       <DialogContent className="bg-neutral-100 dark:bg-neutral-950 ">
         <DialogHeader>
@@ -104,7 +104,7 @@ const NewProjectButton = ({ className }: { className?: string }) => {
           <Label htmlFor="name">Name</Label>
           <Input id="name" name="name" placeholder="Project Name" />
           <Label htmlFor="url">URL</Label>
-          <Input id="url" name="url" placeholder="https://example.dom" />
+          <Input id="url" name="url" placeholder="https://example.com" />
           <Label htmlFor="description">Description</Label>
           <Textarea
             id="description"

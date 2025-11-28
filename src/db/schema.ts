@@ -26,6 +26,9 @@ export const feedbacks = pgTable("feedback", {
   userEmail: text("user_email"),
   message: text("message"),
   rating: integer("rating"),
+  type: varchar("type", { length: 20 }).default("feedback"), // 'feedback' or 'bug'
+  imageUrl: text("image_url"), // URL of uploaded screenshot/image
+
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 

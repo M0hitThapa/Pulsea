@@ -1,6 +1,7 @@
 import { Container } from "@/components/container";
 import CustomButton from "@/components/custom-button";
 import { Navbar } from "@/components/navbar";
+import { Button } from "@/components/ui/button";
 import { Widget } from "@/components/widget";
 import Image from "next/image";
 
@@ -10,6 +11,7 @@ export default function Home() {
   return (
     <Container className="">
       <Navbar />
+
       <div className=" mt-15 md:mt-24">
         <div className="flex flex-col justify-center items-center">
           <div className=" text-xs  md:text-sm text-neutral-600 dark:text-neutral-400 py-1 mb-3 ">
@@ -52,7 +54,9 @@ export default function Home() {
             </h1>
           </div>
           <div className="flex flex-col items-center justify-center gap-1 md:gap-2 text-md sm:text-3xl md:4xl lg:text-5xl font-semibold text-shadow-md text-neutral-900 dark:text-neutral-200 ">
-            <span>Collect User Feedback Effortlessly</span>{" "}
+            <span className="text-neutral-600 dark:text-neutral-400">
+              Collect User Feedback Effortlessly
+            </span>{" "}
             <span>Right Inside Your SaaS.</span>
           </div>
           <p className="text-xs md:text-sm text-neutral-500 flex flex-col justify-center items-center mt-5 gap-1 mx-4 md:mx-10 tracking-tighter md:tracking-normal">
@@ -66,21 +70,23 @@ export default function Home() {
             </span>
           </p>
           <Link href="/dashboard">
-            <CustomButton className="mt-8">Get Started</CustomButton>
+            <Button className="mt-8 bg-neutral-800 dark:bg-neutral-200 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-5 border-2">
+              Get Started
+            </Button>
           </Link>
         </div>
 
-        <div className=" squircle border-8 rounded-lg border-neutral-200 dark:border-neutral-800 mt-8 mx-5">
+        <div className=" squircle mt-8 bg-neutral-300 rounded-lg dark:bg-neutral-800">
           <Image
             src="/hero1.png"
             alt="hero-section"
             height={949}
             width={1771}
-            className="  rounded-lg squircle "
+            className="  rounded-lg squircle  skew-y-2 -skew-2 border-4 border-neutral-400 dark:border-neutral-800"
           />
         </div>
       </div>
-      <Widget projectId={1} />
+      <Widget />
     </Container>
   );
 }

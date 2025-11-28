@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "next-themes";
+import { shadcn } from "@clerk/themes";
+import { QueryProvider } from "@/components/query-provider";
 
 const interSans = Inter({
   variable: "--font-inter-sans",
@@ -21,13 +23,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        theme: shadcn,
+      }}
+    >
       <html lang="en">
         <body
           className={`${interSans.variable} antialiased bg-neutral-50 dark:bg-neutral-950`}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {children}
+            <QueryProvider>{children}</QueryProvider>{" "}
           </ThemeProvider>
         </body>
       </html>
