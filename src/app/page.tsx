@@ -2,7 +2,6 @@ import { Container } from "@/components/container";
 import CustomButton from "@/components/custom-button";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
-import { Widget } from "@/components/widget";
 import Image from "next/image";
 
 import Link from "next/link";
@@ -86,7 +85,6 @@ export default function Home() {
           />
         </div>
       </div>
-      <Widget />
     </Container>
   );
 }
