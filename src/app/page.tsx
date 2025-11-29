@@ -94,7 +94,7 @@ export default function Home() {
 
         <div className=" squircle mt-8 bg-neutral-300 rounded-lg dark:bg-neutral-800">
           <Image
-            src="/hero1.png"
+            src="/hero-black.png"
             alt="hero-section"
             height={949}
             width={1771}

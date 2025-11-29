@@ -1,15 +1,17 @@
+"use client";
+
 import { Container } from "@/components/container";
 
-import { SignOutButton } from "@clerk/nextjs";
+import { SignOutButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import { auth } from "@clerk/nextjs/server";
 import { Button } from "@/components/ui/button";
 import NewProjectButton from "@/components/project/newproject-btn";
 import Image from "next/image";
 
-const DashNav = async () => {
-  const { userId } = await auth();
-  if (!userId) {
+const DashNav = () => {
+  const { isLoaded, isSignedIn } = useUser();
+
+  if (!isLoaded || !isSignedIn) {
     return null;
   }
 
@@ -34,7 +36,7 @@ const DashNav = async () => {
 
         <Button
           asChild
-          className="bg-red-500  rounded-sm text-neutral-50 font-semibold  border-red-200 dark:border-red-700 p-4 border-2 hover:bg-red-600"
+          className="bg-red-500 cursor-pointer  rounded-sm text-neutral-50 font-semibold  border-red-200 dark:border-red-700 p-4 border-2 hover:bg-red-600"
         >
           <SignOutButton />
         </Button>

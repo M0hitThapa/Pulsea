@@ -43,6 +43,7 @@ import {
 } from "../ui/alert-dialog";
 import { AiChat } from "../ai-chat";
 import { EmailDialog } from "../email-dialogue";
+import { useFeedbacks, useDeleteFeedback } from "@/hooks/use-feedbacks";
 
 type Feedback = InferSelectModel<typeof feedbacks>;
 
@@ -61,14 +62,14 @@ function Avatar({
 }) {
   const initials = name
     ? name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .substring(0, 2)
-        .toUpperCase()
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .substring(0, 2)
+      .toUpperCase()
     : email
-    ? email.substring(0, 2).toUpperCase()
-    : "??";
+      ? email.substring(0, 2).toUpperCase()
+      : "??";
 
   return (
     <div className="h-10 w-10 rounded-full bg-linear-to-br from-rose-500 to-rose-600 flex items-center justify-center text-white font-medium text-sm shadow-sm ring-2 ring-white dark:ring-zinc-900">
@@ -129,7 +130,7 @@ function Sidebar({
 
       <aside
         className={cn(
-          "fixed lg:static inset-y-0 left-0 z-50 w-72 bg-zinc-50 dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 transform transition-transform duration-300 ease-in-out lg:transform-none flex flex-col",
+          "fixed lg:static inset-y-0 left-0 z-50 w-72 bg-neutral-50 dark:bg-neutral-950 border-r border-neutral-200 dark:border-neutral-800 transform transition-transform duration-300 ease-in-out lg:transform-none flex flex-col",
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
@@ -149,9 +150,9 @@ function Sidebar({
           </Link>
           <button
             onClick={onClose}
-            className="lg:hidden p-1 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800"
+            className="lg:hidden p-1 rounded-md hover:bg-neutral-200 dark:hover:bg-neutral-800"
           >
-            <X className="h-5 w-5 text-zinc-500" />
+            <X className="h-5 w-5 text-neutral-500" />
           </button>
         </div>
 
@@ -175,8 +176,8 @@ function Sidebar({
                   className={cn(
                     "w-full flex items-center justify-between px-3 py-2 rounded-sm text-sm transition-all duration-200",
                     isActive
-                      ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-zinc-200 dark:ring-zinc-800 font-medium"
-                      : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-900/50 hover:text-zinc-900 dark:hover:text-zinc-200"
+                      ? "bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 shadow-sm ring-1 ring-neutral-200 dark:ring-neutral-800 font-medium"
+                      : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200/50 dark:hover:bg-neutral-900/50 hover:text-neutral-900 dark:hover:text-neutral-200"
                   )}
                 >
                   <div className="flex items-center gap-3">
@@ -195,8 +196,8 @@ function Sidebar({
                       className={cn(
                         "text-xs px-1.5 py-0.5 rounded-md min-w-5 text-center",
                         isActive
-                          ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
-                          : "text-zinc-400"
+                          ? "bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
+                          : "text-neutral-400"
                       )}
                     >
                       {count}
@@ -232,7 +233,7 @@ function FeedbackListItem({
     <div
       onClick={onSelect}
       className={cn(
-        "group relative flex gap-3 px-4 py-4 border-b border-zinc-100 dark:border-zinc-800 cursor-pointer transition-all duration-200",
+        "group relative flex gap-3 px-4 py-4 border-b border-neutral-100 dark:border-neutral-800 cursor-pointer transition-all duration-200",
         isSelected
           ? "bg-neutral-50 dark:bg-neutral-900  pl-3.5" // slightly less padding left to account for border
           : "hover:bg-neutral-60 dark:hover:bg-neutral-900 "
@@ -274,7 +275,7 @@ function FeedbackListItem({
               <MessageSquare className="h-4 w-4 text-blue-500" />
             )}
           </div>
-          <span className="text-xs text-zinc-400 whitespace-nowrap font-medium">
+          <span className="text-xs text-neutral-400 whitespace-nowrap font-medium">
             {feedback.createdAt &&
               new Date(feedback.createdAt).toLocaleDateString("en-US", {
                 month: "short",
@@ -284,15 +285,15 @@ function FeedbackListItem({
         </div>
 
         <div className="flex items-center justify-between mb-1.5">
-          <div className="text-xs text-zinc-500 dark:text-zinc-400 truncate pr-4">
+          <div className="text-xs text-neutral-500 dark:text-neutral-400 truncate pr-4">
             {feedback.userEmail || "No email provided"}
           </div>
           <StarRating rating={feedback.rating} />
         </div>
 
-        <p className="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2 leading-relaxed">
+        <p className="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2 leading-relaxed">
           {feedback.message || (
-            <span className="italic text-zinc-400">No message content</span>
+            <span className="italic text-neutral-400">No message content</span>
           )}
         </p>
       </div>
@@ -333,17 +334,17 @@ function DetailPanel({
 
   if (!feedback) {
     return (
-      <div className="hidden lg:flex flex-1 items-center justify-center bg-white dark:bg-zinc-950">
+      <div className="hidden lg:flex flex-1 items-center justify-center bg-neutral-50 dark:bg-neutral-950">
         <div className="flex flex-col items-center max-w-xs text-center p-6">
-          <div className="w-16 h-16 bg-zinc-100 dark:bg-zinc-900 rounded-2xl flex items-center justify-center mb-4 rotate-3">
-            <div className="w-16 h-16 bg-zinc-50 dark:bg-zinc-800 rounded-2xl flex items-center justify-center -rotate-6 shadow-sm border border-zinc-200 dark:border-zinc-700">
-              <Inbox className="h-8 w-8 text-zinc-400" />
+          <div className="w-16 h-16 bg-neutral-100 dark:bg-neutral-900 rounded-2xl flex items-center justify-center mb-4 rotate-3">
+            <div className="w-16 h-16 bg-neutral-50 dark:bg-neutral-800 rounded-2xl flex items-center justify-center -rotate-6 shadow-sm border border-neutral-200 dark:border-neutral-700">
+              <Inbox className="h-8 w-8 text-neutral-400" />
             </div>
           </div>
-          <h3 className="text-zinc-900 dark:text-zinc-100 font-medium text-lg mb-2">
+          <h3 className="text-neutral-900 dark:text-neutral-100 font-medium text-lg mb-2">
             No Feedback Selected
           </h3>
-          <p className="text-zinc-500 text-sm">
+          <p className="text-neutral-500 text-sm">
             Select an item from the list to view details, ratings, and user
             information.
           </p>
@@ -358,9 +359,9 @@ function DetailPanel({
         <div className="flex items-center justify-between w-full">
           <button
             onClick={onClose}
-            className="lg:hidden mr-2 p-2 -ml-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full"
+            className="lg:hidden mr-2 p-2 -ml-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-full"
           >
-            <X className="h-5 w-5 text-zinc-500" />
+            <X className="h-5 w-5 text-neutral-500" />
           </button>
 
           <AlertDialog>
@@ -400,7 +401,7 @@ function DetailPanel({
       </header>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto bg-white dark:bg-zinc-950">
+      <div className="flex-1 overflow-y-auto bg-neutral-50 dark:bg-neutral-950">
         <div className=" px-4 lg:px-8 py-8">
           {/* Header Section: Minimal Stacked User Info */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8 ">
@@ -416,7 +417,7 @@ function DetailPanel({
               </div>
 
               {/* Email */}
-              <div className="flex items-start gap-4 text-md text-zinc-600 dark:text-zinc-400">
+              <div className="flex items-start gap-4 text-md text-neutral-600 dark:text-neutral-400">
                 <Mail className="size-5 flex-shrink-0 mt-0.5" />
                 <a
                   href={`mailto:${feedback.userEmail}`}
@@ -429,14 +430,14 @@ function DetailPanel({
 
             {/* Date */}
             <div className="flex flex-col gap-4">
-              <div className="flex items-start gap-4 text-sm text-zinc-600 dark:text-zinc-400">
+              <div className="flex items-start gap-4 text-sm text-neutral-600 dark:text-neutral-400">
                 <Calendar className="h-4 w-4 flex-shrink-0 mt-0.5" />
                 <span>
                   {feedback.createdAt
                     ? new Date(feedback.createdAt).toLocaleString(undefined, {
-                        dateStyle: "medium",
-                        timeStyle: "short",
-                      })
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })
                     : "N/A"}
                 </span>
               </div>
@@ -444,7 +445,7 @@ function DetailPanel({
               {/* Rating */}
               {feedback.rating !== null && (
                 <div className="flex items-start gap-4">
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400 w-4 h-4 flex-shrink-0">
+                  <span className="text-sm text-neutral-600 dark:text-neutral-400 w-4 h-4 flex-shrink-0">
                     {/* Using a placeholder for the icon space */}
                   </span>
                   <div className="flex items-center gap-0.5 text-amber-500">
@@ -466,19 +467,19 @@ function DetailPanel({
           </div>
 
           {/* Message Content */}
-          <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800">
-            <h3 className="text-sm font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-4">
+          <div className="pt-4 border-t border-neutral-200 dark:border-neutral-800">
+            <h3 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-4">
               Message
             </h3>
-            <div className="text-base text-zinc-900 dark:text-zinc-100 leading-relaxed whitespace-pre-wrap">
+            <div className="text-base text-neutral-900 dark:text-neutral-100 leading-relaxed whitespace-pre-wrap">
               {feedback.message || "No content."}
             </div>
           </div>
 
           {/* Attachment */}
           {feedback.imageUrl && (
-            <div className="mt-8 pt-4 border-t border-zinc-200 dark:border-zinc-800">
-              <h3 className="text-sm font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-4">
+            <div className="mt-8 pt-4 border-t border-neutral-200 dark:border-neutral-800">
+              <h3 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-4">
                 Attachment
               </h3>
               <div className="max-w-xs overflow-hidden">
@@ -494,7 +495,7 @@ function DetailPanel({
       </div>
 
       {/* Reply Action Footer */}
-      <div className="py-4 px-4 lg:px-8 flex justify-between border-t border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-950">
+      <div className="py-4 px-4 lg:px-8 flex justify-between border-t border-neutral-100 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950">
         {feedback.type === "bug" ? (
           <div className="flex items-center gap-0.5 bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/50 px-1.5 py-0.5 rounded-md">
             <span className="text-xs font-bold text-red-700 dark:text-red-500">
@@ -538,16 +539,15 @@ export function FeedbackSidebar({
     React.useState<Feedback | null>(null);
   const [starredIds, setStarredIds] = React.useState<Set<number>>(new Set());
   const [showDetail, setShowDetail] = React.useState(false);
-  const [feedbacks, setFeedbacks] = React.useState<Feedback[]>(feedbackData);
 
-  React.useEffect(() => {
-    setFeedbacks(feedbackData);
-  }, [feedbackData]);
+  // Use React Query to get feedbacks
+  const { data: feedbacks = feedbackData } = useFeedbacks(String(projectId));
+  const deleteProject = useDeleteFeedback(String(projectId));
 
   const handleDeleteFeedback = (feedbackId: number) => {
-    setFeedbacks((prev) => prev.filter((f) => f.id !== feedbackId));
+    deleteProject.mutate(feedbackId);
     setSelectedFeedback(null);
-    setShowDetail(false); // Explicitly close detail view
+    setShowDetail(false);
 
     // Remove from starred if it was starred
     setStarredIds((prev) => {
@@ -580,7 +580,7 @@ export function FeedbackSidebar({
       );
     }
     return filtered;
-  }, [feedbacks, activeFilter, searchQuery, starredIds]); // Updated dependency
+  }, [feedbacks, activeFilter, searchQuery, starredIds]);
 
   const counts = React.useMemo(() => {
     return {
@@ -609,7 +609,7 @@ export function FeedbackSidebar({
   };
 
   return (
-    <div className="flex h-screen bg-white dark:bg-zinc-950 overflow-hidden font-sans text-zinc-900 dark:text-zinc-100">
+    <div className="flex h-screen bg-neutral-50 dark:bg-neutral-950 overflow-hidden text-neutral-900 dark:text-neutral-100">
       <Sidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
@@ -624,18 +624,18 @@ export function FeedbackSidebar({
         {/* List View */}
         <div
           className={cn(
-            "w-full lg:w-[400px] xl:w-[450px] bg-white dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 flex flex-col z-0",
+            "w-full lg:w-[400px] xl:w-[450px] bg-neutral-50 dark:bg-neutral-950 border-r border-neutral-200 dark:border-neutral-800 flex flex-col z-0",
             showDetail ? "hidden lg:flex" : "flex"
           )}
         >
           {/* List Search Header */}
-          <div className="p-4 border-b border-zinc-100 dark:border-zinc-800">
+          <div className="p-4 border-b border-neutral-100 dark:border-neutral-800">
             <div className="flex items-center gap-3 mb-4">
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="lg:hidden p-2 -ml-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md"
+                className="lg:hidden p-2 -ml-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md"
               >
-                <Menu className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
+                <Menu className="h-5 w-5 text-neutral-600 dark:text-neutral-400" />
               </button>
               <h2 className="text-xl font-bold tracking-tight">
                 {categories.find((c) => c.filter === activeFilter)?.title ||
@@ -643,13 +643,13 @@ export function FeedbackSidebar({
               </h2>
             </div>
             <div className="relative group">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400 group-focus-within:text-blue-500 transition-colors" />
               <input
                 type="text"
                 placeholder="Search feedback..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-zinc-100 dark:bg-zinc-900 border-transparent focus:bg-white dark:focus:bg-zinc-900 border-2 focus:border-neutral-300 dark:focus:border-neutral-800 rounded-lg text-sm transition-all outline-none placeholder:text-zinc-500"
+                className="w-full pl-10 pr-4 py-2 bg-neutral-100 dark:bg-neutral-900 border-transparent focus:bg-white dark:focus:bg-neutral-900 border-2 focus:border-neutral-300 dark:focus:border-neutral-800 rounded-lg text-sm transition-all outline-none placeholder:text-zinc-500"
               />
             </div>
           </div>
@@ -658,13 +658,13 @@ export function FeedbackSidebar({
           <div className="flex-1 overflow-y-auto  scrollbar-hide ">
             {filteredFeedbacks.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-64 text-center px-6">
-                <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center mb-3">
-                  <Search className="h-6 w-6 text-zinc-300" />
+                <div className="w-12 h-12 rounded-full bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center mb-3">
+                  <Search className="h-6 w-6 text-neutral-300" />
                 </div>
-                <p className="text-zinc-900 dark:text-zinc-100 font-medium">
+                <p className="text-neutral-900 dark:text-neutral-100 font-medium">
                   No results found
                 </p>
-                <p className="text-sm text-zinc-500 mt-1">
+                <p className="text-sm text-neutral-500 mt-1">
                   You donot have any feedback right now.
                 </p>
               </div>
@@ -686,7 +686,7 @@ export function FeedbackSidebar({
         {/* Detail View */}
         <div
           className={cn(
-            "flex-1 bg-white dark:bg-zinc-950 relative",
+            "flex-1 bg-neutral-50 dark:bg-neutral-950 relative",
             !showDetail
               ? "hidden lg:flex"
               : "flex absolute inset-0 lg:static z-10"

@@ -1,38 +1,57 @@
-import { FeedbackSidebar } from "@/components/feedback/feedback-sidebar";
-import { db } from "@/db";
-import { projects as dbProjects } from "@/db/schema";
-import { eq } from "drizzle-orm";
+"use client";
 
-const Page = async ({
-  params,
-}: {
-  params: Promise<{
-    projectId: string;
-  }>;
-}) => {
-  const { projectId } = await params;
+import { FeedbackSidebar } from "@/components/feedback/feedback-sidebar";
+import { useProjectDetails } from "@/hooks/use-project-details";
+import { useParams } from "next/navigation";
+import { PageLoaderComponent } from "@/components/page-loader";
+
+const Page = () => {
+  const params = useParams();
+  const projectId = params?.projectId as string;
+
+  const { data: project, isLoading, error } = useProjectDetails(projectId);
 
   if (!projectId) {
-    return <div>Invalid project Id</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-xl text-neutral-600 dark:text-neutral-400">
+          Invalid project ID
+        </p>
+      </div>
+    );
   }
 
-  const projects = await db.query.projects.findMany({
-    where: eq(dbProjects.id, parseInt(projectId)),
-    with: {
-      feedbacks: true,
-    },
-  });
+  if (isLoading) {
+    return <PageLoaderComponent isLoading={isLoading} />;
+  }
 
-  const project = projects[0];
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen gap-4 text-center">
+        <div className="text-4xl mb-4">⚠️</div>
+        <h2 className="text-xl font-semibold mb-2">Failed to load project</h2>
+        <p className="text-neutral-600 dark:text-neutral-300 max-w-sm">
+          {error instanceof Error
+            ? error.message
+            : "An error occurred while loading the project."}
+        </p>
+      </div>
+    );
+  }
 
   if (!project) {
-    return <div>Project not found</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-xl text-neutral-600 dark:text-neutral-400">
+          Project not found
+        </p>
+      </div>
+    );
   }
 
   return (
     <div>
       <div>
-        {/* <Table data={project.feedbacks} /> */}
         <FeedbackSidebar
           projectId={parseInt(projectId)}
           feedbackData={project.feedbacks}

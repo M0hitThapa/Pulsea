@@ -13,36 +13,24 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { deleteProject } from "@/actions/deleteProjectButton";
 import { toast } from "sonner";
+import { useDeleteProject } from "@/hooks/use-projects";
 
 export function DeleteProjectComponent({
   projectId,
-  onDelete,
 }: {
   projectId: number;
-  onDelete: (id: number) => void;
 }) {
-  const [isDeleting, setIsDeleting] = useState(false);
   const [open, setOpen] = useState(false);
+  const deleteProjectMutation = useDeleteProject();
 
   const handleDelete = async () => {
-    setIsDeleting(true);
     try {
-      const result = await deleteProject(projectId);
-
-      if (result.success) {
-        toast.success("project deleted successfully");
-        setOpen(false);
-
-        onDelete(projectId);
-      } else {
-        toast.error(result.error || "failed to delete project");
-      }
+      await deleteProjectMutation.mutateAsync(projectId);
+      toast.success("Project deleted successfully");
+      setOpen(false);
     } catch (error) {
-      toast.error("An error occured while deleting the project");
-    } finally {
-      setIsDeleting(false);
+      toast.error("An error occurred while deleting the project");
     }
   };
   return (
@@ -82,13 +70,15 @@ export function DeleteProjectComponent({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={deleteProjectMutation.isPending}>
+            Cancel
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
-            disabled={isDeleting}
+            disabled={deleteProjectMutation.isPending}
             className="bg-red-500  rounded-sm text-neutral-50 font-semibold  border-red-200 dark:border-red-700 p-4 border-2 hover:bg-red-600"
           >
-            {isDeleting ? "Deleting..." : "Delete"}
+            {deleteProjectMutation.isPending ? "Deleting..." : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

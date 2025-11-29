@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { InferSelectModel } from "drizzle-orm";
 import { projects as dbProjects } from "@/db/schema";
 import {
@@ -19,20 +18,34 @@ import {
 } from "@/components/ui/tooltip";
 import { DeleteProjectComponent } from "@/components/project/delete-project-component";
 import { Container } from "@/components/container";
+import { useProjects } from "@/hooks/use-projects";
+import { Loader2 } from "lucide-react";
+import { PageLoaderComponent } from "@/components/page-loader";
 
 type Project = InferSelectModel<typeof dbProjects>;
 
-export function ProjectListClient({
-  initialProjects,
-}: {
-  initialProjects: Project[];
-}) {
-  const [projects, setProjects] = useState<Project[]>(initialProjects);
+export function ProjectListClient() {
+  const { data: projects, isLoading, error } = useProjects();
 
-  const handleDelete = (projectId: number) => {
-    setProjects((prev) => prev.filter((project) => project.id !== projectId));
-  };
-  if (projects.length === 0) {
+  if (isLoading) {
+    return <PageLoaderComponent isLoading={isLoading} />;
+  }
+
+  if (error) {
+    return (
+      <Container className="border-r border-l px-5 min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <div className="text-4xl mb-4">⚠️</div>
+          <h2 className="text-xl font-semibold mb-2">Failed to load projects</h2>
+          <p className="text-neutral-600 dark:text-neutral-300 max-w-sm">
+            {error instanceof Error ? error.message : "An error occurred while loading your projects."}
+          </p>
+        </div>
+      </Container>
+    );
+  }
+
+  if (!projects || projects.length === 0) {
     return (
       <div className="w-full flex flex-col items-center justify-center py-20 text-center">
         <div className="text-4xl mb-4">🗂️</div>
@@ -126,10 +139,7 @@ export function ProjectListClient({
                   </CardDescription>
                 </div>
 
-                <DeleteProjectComponent
-                  projectId={project.id}
-                  onDelete={handleDelete}
-                />
+                <DeleteProjectComponent projectId={project.id} />
               </CardHeader>
 
               <CardFooter className="flex justify-between items-center">

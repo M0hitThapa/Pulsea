@@ -12,6 +12,7 @@ export async function createProject(formData: FormData) {
     name: formData.get("name") as string,
     description: formData.get("description") as string,
     url: formData.get("url") as string,
+    logoUrl: formData.get("logoUrl") as string | null,
     userId,
   };
 

@@ -15,6 +15,26 @@ async function fetchProjects(): Promise<Project[]> {
   return response.json();
 }
 
+// Create a new project
+async function createProject(data: {
+  name: string;
+  description: string;
+  url: string;
+  logoUrl: string | null;
+}): Promise<{ id: number }> {
+  const response = await fetch("/api/projects", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to create project");
+  }
+  return response.json();
+}
+
 // Delete a project
 async function deleteProject(projectId: number): Promise<void> {
   const response = await fetch(`/api/projects/${projectId}`, {
@@ -29,6 +49,18 @@ export function useProjects() {
   return useQuery({
     queryKey: ["projects"],
     queryFn: fetchProjects,
+  });
+}
+
+export function useCreateProject() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createProject,
+    onSuccess: () => {
+      // Invalidate and refetch projects to show new project
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+    },
   });
 }
 

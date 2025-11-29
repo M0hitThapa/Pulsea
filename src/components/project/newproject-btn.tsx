@@ -12,19 +12,22 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { createProject } from "@/actions/createProject";
 import SubmitButton from "./submit-button";
 import CustomButton from "../custom-button";
 import { useState } from "react";
 import { Upload, X } from "lucide-react";
 import { uploadFile } from "@/lib/supabase";
 import { toast } from "sonner";
+import { useCreateProject } from "@/hooks/use-projects";
+import { useRouter } from "next/navigation";
 
 const NewProjectButton = ({ className }: { className?: string }) => {
   const [open, setOpen] = useState(false);
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const createProject = useCreateProject();
+  const router = useRouter();
 
   const handleLogochange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -52,21 +55,41 @@ const NewProjectButton = ({ className }: { className?: string }) => {
     setLogoFile(null);
     setLogoPreview(null);
   };
+
   const handleSubmit = async (formData: FormData) => {
     try {
+      setUploading(true);
+      let logoUrl: string | null = null;
+
       if (logoFile) {
         const fileName = `${Date.now()}-${logoFile.name}`;
-        const logoUrl = await uploadFile("project-logos", fileName, logoFile);
-        formData.append("logoUrl", logoUrl);
+        logoUrl = await uploadFile("project-logos", fileName, logoFile);
       }
 
-      await createProject(formData);
+      const projectData = {
+        name: formData.get("name") as string,
+        description: formData.get("description") as string,
+        url: formData.get("url") as string,
+        logoUrl,
+      };
+
+      // Create project and wait for response
+      const result = await createProject.mutateAsync(projectData);
+
+      // Close dialog and reset form
       setOpen(false);
       setLogoFile(null);
       setLogoPreview(null);
+
+      toast.success("Project created successfully!");
+
+      // Navigate to instructions page after cache is invalidated
+      router.push(`/projects/${result.id}/instructions`);
     } catch (error) {
-      toast.error("failed to upload image");
-      console.log(error);
+      toast.error("Failed to create project");
+      console.error(error);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -150,7 +173,7 @@ const NewProjectButton = ({ className }: { className?: string }) => {
               </Label>
             )}
           </div>
-          <SubmitButton />
+          <SubmitButton disabled={uploading || createProject.isPending} />
         </form>
       </DialogContent>
     </Dialog>
