@@ -26,7 +26,7 @@ export default function Home() {
     <Container className="">
       <Navbar />
 
-      <div className=" mt-15 md:mt-24">
+      <div className=" mt-18 md:mt-24">
         <div className="flex flex-col justify-center items-center">
           <div className=" text-xs  md:text-sm text-neutral-600 dark:text-neutral-400 py-1 mb-3 ">
             <h1 className="flex items-start gap-1 justify-center">
@@ -73,7 +73,7 @@ export default function Home() {
             </span>{" "}
             <span>Right Inside Your SaaS.</span>
           </div>
-          <p className="text-xs md:text-sm text-neutral-500 flex flex-col justify-center items-center mt-5 gap-1 mx-4 md:mx-10 tracking-tighter md:tracking-normal">
+          <p className="text-xs md:text-sm text-neutral-500 flex flex-col justify-center items-center mt-7 md:mt-5 gap-1 mx-4 md:mx-10 tracking-tighter md:tracking-normal">
             <span className="text-center">
               Embed a lightweight widget into your product and start capturing
               real-time
@@ -86,13 +86,13 @@ export default function Home() {
 
           <Button
             onClick={onSend}
-            className="mt-8 cursor-pointer bg-neutral-800 hover:bg-neutral-700 dark:bg-neutral-200 dark:hover:bg-neutral-100 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-5 border-2"
+            className="mt-12 md:mt-8 cursor-pointer bg-neutral-800 hover:bg-neutral-700 dark:bg-neutral-200 dark:hover:bg-neutral-100 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-5 border-2"
           >
             Get Started
           </Button>
         </div>
 
-        <div className=" squircle mt-8 bg-neutral-300 rounded-lg dark:bg-neutral-800">
+        <div className=" squircle mt-12 md:mt-8 bg-neutral-300 rounded-lg dark:bg-neutral-800 mx-4">
           <Image
             src="/hero-black.png"
             alt="hero-section"
