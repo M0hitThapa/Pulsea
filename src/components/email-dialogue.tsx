@@ -72,7 +72,7 @@ export function EmailDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-neutral-800 dark:bg-neutral-200 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-4 border-2">
+        <Button className="bg-neutral-800 hover:bg-neutral-700 dark:hover:bg-neutral-100 cursor-pointer dark:bg-neutral-200 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-4 border-2">
           <Reply className="h-4 w-4" />
           Reply via Email
         </Button>
@@ -163,7 +163,7 @@ export function EmailDialog({
             <Button
               type="submit"
               disabled={loading}
-              className="bg-neutral-800 dark:bg-neutral-200 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-4 border-2"
+              className="bg-neutral-800 hover:bg-neutral-700 dark:hover:bg-neutral-100 cursor-pointer dark:bg-neutral-200 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-4 border-2"
             >
               {loading ? (
                 <>

@@ -40,7 +40,7 @@ export const ModeToggle = () => {
   return (
     <button
       onClick={SWITCH_THEME}
-      className="relative size-4 md:size-6 items-center justify-center"
+      className="relative size-4 md:size-6 items-center justify-center cursor-pointer"
     >
       <Moon className="absolute inset-0 size-4 md:size-6 shrink-0 scale-0 rotate-45 transition-all duration-300 dark:scale-100 dark:rotate-0 dark:text-neutral-200" />
       <Sun className="absolute inset-0 size-4 md:size-6 shrink-0 scale-100 text-neutral-500 transition-all duration-300 dark:scale-0 dark:rotate-45" />

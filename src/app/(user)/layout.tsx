@@ -1,9 +1,10 @@
 import { Suspense } from "react";
-import Loading from "./loading";
+import PageLoader from "./loading";
+
 const UserLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
-      <Suspense fallback={<Loading />}>{children}</Suspense>
+      <Suspense fallback={<PageLoader />}>{children}</Suspense>
     </div>
   );
 };

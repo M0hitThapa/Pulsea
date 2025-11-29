@@ -83,7 +83,7 @@ export function AiChat({ projectId }: { projectId: number }) {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="gap-2 w-full cursor-pointer bg-neutral-800 dark:bg-neutral-200 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-4 border-2">
+        <Button className="gap-2 w-full  bg-neutral-800 hover:bg-neutral-700 dark:hover:bg-neutral-100 cursor-pointer dark:bg-neutral-200 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-4 border-2">
           <Bot className="size-4" />
           Ask AI
         </Button>

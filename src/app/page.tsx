@@ -1,12 +1,27 @@
+"use client";
+
 import { Container } from "@/components/container";
 import CustomButton from "@/components/custom-button";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useUser } from "@clerk/nextjs";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+  const { isLoaded, isSignedIn } = useUser();
+
+  function onSend() {
+    if (!isLoaded) return;
+    if (!isSignedIn) {
+      router.push("/sign-in");
+      return;
+    }
+    router.push("/dashboard");
+  }
   return (
     <Container className="">
       <Navbar />
@@ -68,11 +83,13 @@ export default function Home() {
               experience.
             </span>
           </p>
-          <Link href="/dashboard">
-            <Button className="mt-8 bg-neutral-800 dark:bg-neutral-200 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-5 border-2">
-              Get Started
-            </Button>
-          </Link>
+
+          <Button
+            onClick={onSend}
+            className="mt-8 cursor-pointer bg-neutral-800 hover:bg-neutral-700 dark:bg-neutral-200 dark:hover:bg-neutral-100 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-5 border-2"
+          >
+            Get Started
+          </Button>
         </div>
 
         <div className=" squircle mt-8 bg-neutral-300 rounded-lg dark:bg-neutral-800">

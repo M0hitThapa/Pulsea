@@ -496,14 +496,18 @@ function DetailPanel({
       {/* Reply Action Footer */}
       <div className="py-4 px-4 lg:px-8 flex justify-between border-t border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-950">
         {feedback.type === "bug" ? (
-          <div className="flex items-center gap-1.5 px-3 py-1 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 rounded-full text-xs font-medium border border-red-100 dark:border-red-900/50">
-            <Bug className="h-3.5 w-3.5" />
-            Bug Report
+          <div className="flex items-center gap-0.5 bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/50 px-1.5 py-0.5 rounded-md">
+            <span className="text-xs font-bold text-red-700 dark:text-red-500">
+              Bug Report
+            </span>
+            <Star className="h-3 w-3 fill-red-400 text-red-400" />
           </div>
         ) : (
-          <div className="flex items-center gap-1.5 px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-medium border border-blue-100 dark:border-blue-900/50">
-            <MessageSquare className="h-3.5 w-3.5" />
-            Feedback
+          <div className="flex items-center gap-0.5 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50 px-1.5 py-0.5 rounded-md">
+            <span className="text-xs font-bold text-blue-700 dark:text-blue-500">
+              Feedback
+            </span>
+            <Star className="h-3 w-3 fill-blue-400 text-blue-400" />
           </div>
         )}
         <div className=" ">

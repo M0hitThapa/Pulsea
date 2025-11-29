@@ -55,7 +55,7 @@ export const Navbar = () => {
             {isSignedIn ? (
               <>
                 <Button
-                  className="bg-neutral-800 dark:bg-neutral-200 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-4 border-2"
+                  className="bg-neutral-800 cursor-pointer dark:bg-neutral-200 hover:bg-neutral-700 dark:hover:bg-neutral-100 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-4 border-2"
                   onClick={() => onSend()}
                 >
                   Dashboard
@@ -64,7 +64,7 @@ export const Navbar = () => {
             ) : (
               <>
                 <Button
-                  className="bg-neutral-800 dark:bg-neutral-200 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-4 border-2"
+                  className="bg-neutral-800 cursor-pointer hover:bg-neutral-700 dark:hover:bg-neutral-100 dark:bg-neutral-200 rounded-sm text-neutral-100 dark:text-neutral-800 border-neutral-600 dark:border-neutral-400 p-4 border-2"
                   onClick={() => onSend()}
                 >
                   SignIn
