@@ -36,9 +36,13 @@ export function ProjectListClient() {
       <Container className="border-r border-l px-5 min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4 text-center">
           <div className="text-4xl mb-4">⚠️</div>
-          <h2 className="text-xl font-semibold mb-2">Failed to load projects</h2>
+          <h2 className="text-xl font-semibold mb-2">
+            Failed to load projects
+          </h2>
           <p className="text-neutral-600 dark:text-neutral-300 max-w-sm">
-            {error instanceof Error ? error.message : "An error occurred while loading your projects."}
+            {error instanceof Error
+              ? error.message
+              : "An error occurred while loading your projects."}
           </p>
         </div>
       </Container>
@@ -83,7 +87,10 @@ export function ProjectListClient() {
       </h1>
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-6  pt-5  ">
         {projects.map((project: Project) => (
-          <li key={project.id} className="">
+          <li
+            key={project.id}
+            className="drop-shadow-lg drop-shadow-neutral-300 dark:drop-shadow-black"
+          >
             <Card className="h-80 w-auto z-10 inset-0 flex flex-col justify-between border-2 border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
               <CardHeader className="flex items-start justify-between">
                 <div className="flex flex-col gap-5">

@@ -16,11 +16,7 @@ import {
 import { toast } from "sonner";
 import { useDeleteProject } from "@/hooks/use-projects";
 
-export function DeleteProjectComponent({
-  projectId,
-}: {
-  projectId: number;
-}) {
+export function DeleteProjectComponent({ projectId }: { projectId: number }) {
   const [open, setOpen] = useState(false);
   const deleteProjectMutation = useDeleteProject();
 
@@ -36,7 +32,7 @@ export function DeleteProjectComponent({
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button
+        {/* <Button
           variant="ghost"
           className="cursor-pointer  text-red-500 hover:text-red-600 transition-colors duration-300 p-1"
         >
@@ -59,6 +55,34 @@ export function DeleteProjectComponent({
             <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
             <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
           </svg>
+        </Button> */}
+
+        <Button
+          size="sm"
+          className=" p-1 rounded-sm backdrop-blur-lg border-2 border-neutral-300 dark:border-neutral-800 bg-gradient-to-tr from-red-100 to-white dark:from-neutral-950 dark:to-neutral-950  hover:scale-110 hover:rotate-2 active:scale-95 active:rotate-0 transition-all duration-300 ease-out cursor-pointer  hover:bg-gradient-to-tr hover:from-red-400 hover:to-neutral-300 group relative overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-400 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></div>
+          <div className="relative z-10">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              className="icon icon-tabler icons-tabler-outline icon-tabler-trash size-6 text-red-500"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M4 7l16 0" />
+              <path d="M10 11l0 6" />
+              <path d="M14 11l0 6" />
+              <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+              <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+            </svg>
+          </div>
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
